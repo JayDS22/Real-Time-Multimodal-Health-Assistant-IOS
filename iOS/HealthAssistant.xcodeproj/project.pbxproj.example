@@ -1,0 +1,32 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1A1A1A101 /* HealthAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B101; };
+		A1A1A1A102 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B102; };
+		A1A1A1A103 /* HealthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B103; };
+		A1A1A1A104 /* LLMInferenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B104; };
+		A1A1A1A105 /* ActivityRecognitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B105; };
+		A1A1A1A106 /* ARPoseEstimationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B106; };
+		A1A1A1A107 /* SensorFusionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B107; };
+		A1A1A1A108 /* HealthDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B108; };
+		A1A1A1A109 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B109; };
+		A1A1A1A110 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B110; };
+		A1A1A1A111 /* ARWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B111; };
+		A1A1A1A112 /* VoiceAssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B112; };
+		A1A1A1A113 /* InsightsAndSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B1B1B113; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B1B1B1B101 /* HealthAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAssistantApp.swift; sourceTree = "<group>"; };
+		B1B1B1B102 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+	};
+	rootObject = C1C1C1C100;
+}
