@@ -68,39 +68,32 @@ HealthAssistant/
 
 The app is organized as five horizontal layers — each layer only depends on the one below it, with a thin **Multimodal Fusion** layer that joins parallel streams before they reach the presentation layer.
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        PRESENTATION LAYER (SwiftUI)                     │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐    │
-│  │  Dashboard   │ │ AR Workout   │ │    Voice     │ │   Insights   │    │
-│  │   (Vitals)   │ │  (Overlay)   │ │  Assistant   │ │   & Charts   │    │
-│  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘ └──────┬───────┘    │
-└─────────┼────────────────┼────────────────┼────────────────┼────────────┘
-          │                │                │                │
-┌─────────▼────────────────▼────────────────▼────────────────▼────────────┐
-│                    MULTIMODAL FUSION LAYER                              │
-│         AppState  ·  Combine publishers  ·  @MainActor isolation        │
-│         Joins: pose + vitals + voice intent + activity prediction       │
-└─────────┬────────────────┬────────────────┬────────────────┬────────────┘
-          │                │                │                │
-┌─────────▼─────────┐ ┌────▼─────────┐ ┌────▼──────┐ ┌──────▼────────────┐
-│  ML INFERENCE     │ │  AR / VISION │ │  AUDIO    │ │  SENSOR FUSION    │
-│  ┌─────────────┐  │ │ ┌──────────┐ │ │ ┌───────┐ │ │ ┌───────────────┐ │
-│  │ LLaMA-7B    │  │ │ │ ARKit    │ │ │ │ SFSR  │ │ │ │ CoreMotion    │ │
-│  │ 4-bit CoreML│  │ │ │ Body     │ │ │ │ (en)  │ │ │ │ 50 Hz IMU     │ │
-│  │ <100ms ANE  │  │ │ │ Tracking │ │ │ ├───────┤ │ │ ├───────────────┤ │
-│  ├─────────────┤  │ │ ├──────────┤ │ │ │ AVTTS │ │ │ │ Kalman Filter │ │
-│  │ Activity    │  │ │ │ Vision   │ │ │ │       │ │ │ │ HR fusion     │ │
-│  │ Classifier  │  │ │ │ Pose Req │ │ │ └───────┘ │ │ ├───────────────┤ │
-│  │ 93% acc     │  │ │ │ 30 FPS   │ │ │           │ │ │ Pedometer     │ │
-│  └─────────────┘  │ │ └──────────┘ │ │           │ │ │ Altimeter     │ │
-└───────────────────┘ └──────────────┘ └───────────┘ │ └───────────────┘ │
-                                                     └───────────────────┘
-┌─────────────────────────────────────────────────────────────────────────┐
-│                          SENSOR / SOURCE LAYER                          │
-│  Camera · Microphone · Accelerometer · Gyroscope · Magnetometer ·       │
-│  Barometer · HealthKit · Pedometer · Heart-rate (Watch via HK)          │
-└─────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    classDef ui fill:#1d2a3a,stroke:#58a6ff,stroke-width:2px,color:#e6edf3
+    classDef fuse fill:#1a1a2e,stroke:#e94560,stroke-width:2px,color:#e6edf3
+    classDef ml fill:#1f2a23,stroke:#3fb950,stroke-width:2px,color:#e6edf3
+    classDef sense fill:#2a2520,stroke:#c9a227,stroke-width:2px,color:#e6edf3
+
+    UI[SwiftUI Presentation<br/>Dashboard · AR Workout · Voice · Insights]:::ui
+    F[Multimodal Fusion<br/>AppState · Combine · @MainActor<br/>pose + vitals + intent + activity]:::fuse
+    ML[ML Inference<br/>LLaMA-7B 4-bit CoreML &lt;100ms ANE<br/>Activity classifier 93%]:::ml
+    AR[ARKit + Vision<br/>body tracking · pose req 30 FPS]:::ml
+    AU[Audio<br/>SFSR · AVTTS]:::ml
+    SF[Sensor Fusion<br/>CoreMotion 50 Hz · Kalman HR<br/>pedometer · altimeter]:::ml
+    S[Sensors / Sources<br/>Camera · Mic · IMU · HealthKit<br/>Watch HR · barometer]:::sense
+
+    UI <--> F
+    F --> ML & AR & AU & SF
+    ML --> S
+    AR --> S
+    AU --> S
+    SF --> S
+
+    click ML href "iOS" "iOS app source"
+    click AR href "iOS" "iOS app source"
+    click AU href "iOS" "iOS app source"
+    click SF href "iOS" "iOS app source"
 ```
 
 ### Data flow — a typical inference cycle
@@ -164,7 +157,7 @@ open HealthAssistant.xcodeproj   # or use Package.swift with `swift build`
 In Xcode:
 1. Select your development team under **Signing & Capabilities**.
 2. Choose a physical iOS 17+ device (the AR + camera features will not work in the simulator).
-3. Press **⌘R** to run.
+3. Press **R** to run.
 
 You'll be prompted for camera, microphone, speech recognition, motion, and HealthKit permissions on first launch.
 
